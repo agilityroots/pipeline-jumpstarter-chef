@@ -38,5 +38,5 @@ if (installed) {
     instance.restart()
 }  
 _EOF_
-curl  --data-urlencode "script=$(<./loadPlugins.groovy)" http://localhost:8080/scriptText
+curl -sS --data-urlencode "script=$(<./loadPlugins.groovy)" http://localhost:8080/scriptText
 fi
