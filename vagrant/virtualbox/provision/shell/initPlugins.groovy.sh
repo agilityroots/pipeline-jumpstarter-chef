@@ -6,7 +6,7 @@ import java.util.logging.Logger
 def logger = Logger.getLogger("")
 def installed = false
 def initialized = false
-def pluginParameter="git github github-organization-folder github-branch-source maven-plugin credentials ssh-credentials credentials-binding nested-view copyartifact build-user-vars-plugin envinject groovy-postbuild violations ssh-slaves job-dsl cloudbees-folder view-job-filters ws-cleanup timestamper build-timeout email-ext mailer parameterized-trigger run-condition conditional-buildstep build-pipeline-plugin matrix-auth workflow-aggregator sonar sonar-quality-gates docker-plugin docker-workflow pipeline-github-lib"
+def pluginParameter="git github github-organization-folder github-branch-source maven-plugin credentials ssh-credentials credentials-binding nested-view copyartifact build-user-vars-plugin groovy-postbuild violations ssh-slaves job-dsl cloudbees-folder view-job-filters ws-cleanup timestamper build-timeout email-ext mailer parameterized-trigger run-condition conditional-buildstep build-pipeline-plugin matrix-auth workflow-aggregator sonar sonar-quality-gates docker-plugin docker-workflow pipeline-github-lib nexus-jenkins-plugin"
 def plugins = pluginParameter.split()
 logger.info("" + plugins)
 def instance = Jenkins.getInstance()
@@ -34,9 +34,11 @@ plugins.each {
 }
 if (installed) {
     logger.info("Plugins installed, initializing a restart!")
+    println("Plugins installed, initiating a restart")
     instance.save()
     instance.restart()
 }  
 _EOF_
+timeout 10 bash -c -- 'while [ $(curl --write-out %{http_code} --silent --output /dev/null http://localhost:8080/api/json) -ne 200 ]; do echo "." > /dev/null;done'
 curl -sS --data-urlencode "script=$(<./loadPlugins.groovy)" http://localhost:8080/scriptText
 fi

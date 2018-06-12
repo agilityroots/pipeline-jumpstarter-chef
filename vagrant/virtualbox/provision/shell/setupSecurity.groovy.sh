@@ -1,6 +1,6 @@
-if [ ! -f "initUsers.groovy" ]
+if [ ! -f "setupSecurity.groovy" ]
 then
-    cat > initUsers.groovy <<_EOF_
+    cat > setupSecurity.groovy <<_EOF_
 import jenkins.*
 import hudson.*
 import com.cloudbees.plugins.credentials.*
@@ -11,6 +11,7 @@ import hudson.plugins.sshslaves.*;
 import hudson.model.*
 import jenkins.model.*
 import hudson.security.*
+import hudson.security.csrf.*
 
 global_domain = Domain.global()
 credentials_store =
@@ -42,6 +43,22 @@ strategy.add(Jenkins.ADMINISTER, "admin")
 
 instance.setAuthorizationStrategy(strategy)
 instance.save()
+
+if(!Jenkins.instance.isQuietingDown()) {
+    def j = Jenkins.instance
+    if(j.getCrumbIssuer() == null) {
+        j.setCrumbIssuer(new DefaultCrumbIssuer(true))
+        j.save()
+        println 'CSRF Protection configuration has changed.  Enabled CSRF Protection.'
+    }
+    else {
+        println 'Nothing changed.  CSRF Protection already configured.'
+    }
+}
+else {
+    println "Shutdown mode enabled.  Configure CSRF protection SKIPPED."
+}
 _EOF_
-curl -sS --data-urlencode "script=$(<./initUsers.groovy)" http://localhost:8080/scriptText
+timeout 10 bash -c -- 'while [ $(curl --write-out %{http_code} --silent --output /dev/null http://localhost:8080/api/json) -ne 200 ]; do echo "." > /dev/null;done'
+curl -sS --data-urlencode "script=$(<./setupSecurity.groovy)" http://localhost:8080/scriptText
 fi

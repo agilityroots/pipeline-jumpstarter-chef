@@ -20,14 +20,14 @@ Vagrant.configure("2") do |config|
       vbox.memory = 2048
       vbox.cpus = 2
     end
-    # provisioner.vm.provision "chef_solo" do |chef|
-    #   chef.node_name = "chef-provisioned"
-	  #   chef.cookbooks_path = "../../chef/cookbooks"
-    #   chef.add_recipe "pipeline-jumpstart-chef"
-    # end
-    # provisioner.vm.provision "shell", path: './provision/shell/initPlugins.groovy.sh'
+    provisioner.vm.provision "chef_solo" do |chef|
+      chef.node_name = "chef-provisioned"
+	    chef.cookbooks_path = "../../chef/apps/pipeline-jumpstarter-chef/cookbooks"
+      chef.add_recipe "pipeline-jumpstart-chef"
+    end
     provisioner.vm.provision "shell", path: './provision/shell/disableUsageStats.groovy.sh'
-    provisioner.vm.provision "shell", path: './provision/shell/csrfProtection.groovy.sh'
-    provisioner.vm.provision "shell", path: './provision/shell/initUsers.groovy.sh'
+    provisioner.vm.provision "shell", path: './provision/shell/initPlugins.groovy.sh'
+    provisioner.vm.provision "shell", path: './provision/shell/jenkinsSettings.groovy.sh'
+    provisioner.vm.provision "shell", path: './provision/shell/setupSecurity.groovy.sh'
   end
 end
