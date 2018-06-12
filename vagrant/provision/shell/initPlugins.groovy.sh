@@ -6,7 +6,7 @@ import java.util.logging.Logger
 def logger = Logger.getLogger("")
 def installed = false
 def initialized = false
-def pluginParameter="git credentials ssh-credentials git-client scm-api github github-api github-oauth mailer javadoc maven-plugin jquery dashboard-view parameterized-trigger token-macro run-condition conditional-buildstep build-pipeline-plugin cloudbees-folder job-dsl view-job-filters embeddable-build-status groovy dashboard-view rich-text-publisher-plugin console-column-plugin docker-plugin ws-cleanup timestamper ssh-slaves peline-github-lib workflow-aggregator matrix-auth github-branch-source email-ext build-timeout sonar sonar-quality-gates nexus-jenkins-plugin docker-workflow credentials-binding github-organization-folder nested-view copyartifact build-blocker-plugin build-user-vars-plugin envinject groovy-postbuild violations"
+def pluginParameter="git github github-organization-folder github-branch-source maven-plugin credentials ssh-credentials credentials-binding nested-view copyartifact build-user-vars-plugin envinject groovy-postbuild violations ssh-slaves job-dsl cloudbees-folder view-job-filters ws-cleanup timestamper build-timeout email-ext mailer parameterized-trigger run-condition conditional-buildstep build-pipeline-plugin matrix-auth workflow-aggregator sonar sonar-quality-gates docker-plugin docker-workflow pipeline-github-lib"
 def plugins = pluginParameter.split()
 logger.info("" + plugins)
 def instance = Jenkins.getInstance()

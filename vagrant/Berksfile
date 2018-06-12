@@ -1,6 +1,8 @@
 source 'https://supermarket.chef.io'
 
 cookbook 'java', '~> 2.1.0'
+cookbook 'nexus3', '~> 2.1.1'
+cookbook 'jenkins', '~> 6.0.0'
 cookbook 'chef-sugar', '~> 4.0.0'
 cookbook 'chef-apt-docker', '~> 2.0.6'
 cookbook 'docker', '~> 4.2.0'

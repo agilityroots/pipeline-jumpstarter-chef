@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
     provisioner.vm.box = "ubuntu/xenial64"
     provisioner.vm.box_version = "20180509.0.0"
     provisioner.vm.box_check_update = false
-    provisioner.omnibus.chef_version = :latest
+    provisioner.omnibus.chef_version = '14.2.0-1'
     provisioner.vm.network "forwarded_port", guest: 8080, host: 8282
     provisioner.vm.network "forwarded_port", guest: 8081, host: 8383
     provisioner.vm.network "forwarded_port", guest: 9000, host: 8484
@@ -20,10 +20,11 @@ Vagrant.configure("2") do |config|
       vbox.memory = 2048
       vbox.cpus = 2
     end
-    provisioner.vm.provision "chef_solo" do |chef|
-      chef.node_name = "chef-provisioned"
-	    chef.cookbooks_path = "../../cookbooks"
-      chef.add_recipe "pipeline-jumpstart-chef"
-    end
+    # provisioner.vm.provision "chef_solo" do |chef|
+    #   chef.node_name = "chef-provisioned"
+	  #   chef.cookbooks_path = "../chef/cookbooks"
+    #   chef.add_recipe "pipeline-jumpstart-chef"
+    # end
+    provisioner.vm.provision "shell", path: './provision/shell/initPlugins.groovy.sh'
   end
 end
