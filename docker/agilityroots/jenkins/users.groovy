@@ -21,9 +21,9 @@ credentials_store.addCredentials(global_domain, credentials)
 
 def hudsonRealm = new HudsonPrivateSecurityRealm(false)
 def adminUsername = System.getenv('JENKINS_ADMIN_USERNAME') ?: 'admin'
-def adminPassword = System.getenv('JENKINS_ADMIN_PASSWORD') ?: 'password'
+def adminPassword = System.getenv('JENKINS_ADMIN_PASSWORD') ?: 'J5nkins@AR#2018'
 hudsonRealm.createAccount(adminUsername, adminPassword)
-hudsonRealm.createAccount("anadi", "anadi")
+hudsonRealm.createAccount("engineer", "Engin55r@AR#2018")
 
 def instance = Jenkins.getInstance()
 instance.setSecurityRealm(hudsonRealm)
@@ -31,8 +31,11 @@ instance.save()
 
 def strategy = new GlobalMatrixAuthorizationStrategy()
 
+// Setting anonymous permissions
 strategy.add(hudson.model.Hudson.READ,'anonymous')
 strategy.add(hudson.model.Item.READ,'anonymous')
+
+//TODO - Setting Logged in User Permisions
 
 // Setting Admin Permissions
 strategy.add(Jenkins.ADMINISTER, "admin")
