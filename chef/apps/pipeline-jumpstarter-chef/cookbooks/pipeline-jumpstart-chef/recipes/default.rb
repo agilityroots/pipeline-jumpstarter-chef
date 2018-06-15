@@ -25,3 +25,16 @@ end
 docker_service_manager 'default' do
     action [:start]
 end
+
+## Add Sonarqube and Postgres as Docker Containers
+directory '/opt/sonarqube' do
+    owner 'docker'
+    group 'docker'
+end
+
+template '/opt/sonarqube/docker-compose.yml' do
+    source 'docker-compose.yml.erb'
+    owner 'docker'
+    group 'docker'
+    mode '0755'
+end
