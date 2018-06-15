@@ -1,6 +1,8 @@
 import jenkins.model.Jenkins
 import jenkins.model.JenkinsLocationConfiguration
 import net.sf.json.JSONObject
+import java.util.logging.Logger
+def logger = Logger.getLogger("")
 
 if(!binding.hasVariable('master_settings')) {
     master_settings = [:]
@@ -31,48 +33,48 @@ JenkinsLocationConfiguration location = j.getExtensionList('jenkins.model.Jenkin
 Boolean save = false
 
 if(location.url != frontend_url) {
-    println "Updating Jenkins URL to: ${frontend_url}"
+    logger.info("Updating Jenkins URL to: ${frontend_url}") 
     location.url = frontend_url
     save = true
 }
 if(admin_email && location.adminAddress != admin_email) {
-    println "Updating Jenkins Email to: ${admin_email}"
+    logger.info("Updating Jenkins Email to: ${admin_email}")
     location.adminAddress = admin_email
     save = true
 }
 if(j.systemMessage != system_message) {
-    println 'System message has changed.  Updating message.'
+    logger.info('System message has changed.  Updating message.')
     j.systemMessage = system_message
     save = true
 }
 if(j.quietPeriod != quiet_period) {
-    println "Setting Jenkins Quiet Period to: ${quiet_period}"
+    logger.info("Setting Jenkins Quiet Period to: ${quiet_period}")
     j.quietPeriod = quiet_period
     save = true
 }
 if(j.scmCheckoutRetryCount != scm_checkout_retry_count) {
-    println "Setting Jenkins SCM checkout retry count to: ${scm_checkout_retry_count}"
+    logger.info("Setting Jenkins SCM checkout retry count to: ${scm_checkout_retry_count}")
     j.scmCheckoutRetryCount = scm_checkout_retry_count
     save = true
 }
 if(j.numExecutors != master_executors) {
-    println "Setting master num executors to: ${master_executors}"
+    logger.info("Setting master num executors to: ${master_executors}")
     j.numExecutors = master_executors
     save = true
 }
 if(j.labelString != master_labels) {
-    println "Setting master labels to: ${master_labels}"
+    logger.info("Setting master labels to: ${master_labels}")
     j.setLabelString(master_labels)
     save = true
 }
 if(j.slaveAgentPort != jnlp_slave_port) {
     if(jnlp_slave_port <= 65535 && jnlp_slave_port >= -1) {
-        println "Set JNLP Slave port: ${jnlp_slave_port}"
+        logger.info("Set JNLP Slave port: ${jnlp_slave_port}")
         j.slaveAgentPort = jnlp_slave_port
         save = true
     }
     else {
-        println "WARNING: JNLP port ${jnlp_slave_port} outside of TCP port range.  Must be within -1 <-> 65535.  Nothing changed."
+        logger.info("WARNING: JNLP port ${jnlp_slave_port} outside of TCP port range.  Must be within -1 <-> 65535.  Nothing changed.")
     }
 }
 // Configure GIT Settings

@@ -9,9 +9,9 @@ if(!j.isQuietingDown()) {
         logger('Disabled submitting usage stats to Jenkins project.')
     }
     else {
-        logger('Nothing changed.  Usage stats are not submitted to the Jenkins project.')
+        logger.info('Nothing changed.  Usage stats are not submitted to the Jenkins project.')
     }
 }
 else {
-    logger('Shutdown mode enabled.  Disable usage stats SKIPPED.')
+    logger.info('Shutdown mode enabled.  Disable usage stats SKIPPED.')
 }
