@@ -1,5 +1,9 @@
 import jenkins.model.Jenkins
+import hudson.model.UpdateSite
 import java.util.logging.Logger
+import hudson.security.csrf.DefaultCrumbIssuer
+import jenkins.security.s2m.AdminWhitelistRule
+
 def logger = Logger.getLogger("")
 // Diable CLI Remoting
 jenkins.model.Jenkins.instance.getDescriptor("jenkins.CLI").get().setEnabled(false)
@@ -45,7 +49,6 @@ System.setProperty("hudson.model.DirectoryBrowserSupport.CSP", "default-src 'sel
 for(UpdateSite site : jenkins.getUpdateCenter().getSiteList()) {
     site.neverUpdate = true
     site.data = null
-    site.dataLastReadFromFile = -1
     site.dataTimestamp = 0
     new File(jenkins.getRootDir(), "updates/${site.id}.json").delete()
 }
