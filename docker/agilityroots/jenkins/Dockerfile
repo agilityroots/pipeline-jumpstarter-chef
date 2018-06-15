@@ -5,7 +5,7 @@ COPY executors.groovy /usr/share/jenkins/ref/init.groovy.d/executors.groovy
 COPY jenkinsSettings.groovy /usr/share/jenkins/ref/init.groovy.d/jenkinsSettings.groovy
 COPY jdk.groovy /usr/share/jenkins/ref/init.groovy.d/jdk.groovy
 COPY maven.groovy /usr/share/jenkins/ref/init.groovy.d/maven.groovy
-COPY xsecurity.groovy /usr/share/jenkins/ref/init.groovy.d/xsecurity.groovy
 COPY users.groovy /usr/share/jenkins/ref/init.groovy.d/users.groovy
+COPY xsecurity.groovy /usr/share/jenkins/ref/init.groovy.d/xsecurity.groovy
 RUN echo 2.60.3 > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 RUN echo 2.60.3 > /usr/share/jenkins/ref/jenkins.install.InstallUtil.lastExecVersion
