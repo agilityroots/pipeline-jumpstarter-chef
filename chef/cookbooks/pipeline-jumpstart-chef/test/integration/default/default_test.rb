@@ -16,11 +16,7 @@ describe command('java --version') do
   its('stdout') { should match /java 10/ }
 end
 
-describe package('jenkins') do
-  it { should be_installed }
-end
-
-describe service('jenkins') do
+describe service('docker') do
   it { should be_running }
 end
 
@@ -28,10 +24,14 @@ describe port(8080) do
   it { should be_listening }
 end
 
-describe service('nexus') do
-  it { should be_running }
+describe port(8081) do
+  it { should be_listening }
 end
 
-describe port(8383) do
+describe port(9000) do
+  it { should be_listening }
+end
+
+describe port(5432) do
   it { should be_listening }
 end

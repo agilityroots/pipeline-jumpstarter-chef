@@ -20,8 +20,6 @@ chef_version '>= 12.14' if respond_to?(:chef_version)
 # source_url 'https://github.com/<insert_org_here>/pipeline-jumpstart-chef'
 
 depends 'java', '~> 2.1.0'
-depends 'nexus3', '~> 2.1.1'
-depends 'jenkins', '~> 6.0.0'
 depends 'chef-sugar', '~> 4.0.0'
 depends 'chef-apt-docker', '~> 2.0.6'
 depends 'docker', '~> 4.2.0'
