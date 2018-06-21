@@ -22,19 +22,9 @@ describe 'pipeline-jumpstart-chef::default' do
         #     allow_any_instance_of(Chef::Recipe)         
         # end
 
-        # it 'includes the java cookbook' do
-        #     expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('java::default')
-        #     expect_any_instance_of(Chef::Recipe).to receive(:include_recipe).with('jenkins::master')
-        #     chef_run
-        # end
-
         # or not to mock
         it 'includes the java cookbook' do
             expect(chef_run).to include_recipe('java::default')
-        end
-
-        it 'includes the jenkins cookbook' do
-            expect(chef_run).to include_recipe('jenkins::master')
         end
     end
 end
