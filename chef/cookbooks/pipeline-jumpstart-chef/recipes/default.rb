@@ -53,15 +53,28 @@ directory '/opt/sonarqube/bundled-plugins' do
     action :create
 end
 
+user 'nexus' do
+    uid '200'
+    system true
+    shell '/bin/bash'
+end
+
 directory '/opt/sonatype-work/data' do
-    owner 'root'
-    group 'root'
+    owner 'nexus'
     mode '0755'
     recursive true
     action :create
 end
 
 directory '/var/lib/jenkins' do
+    owner 'vagrant'
+    group 'vagrant'
+    mode '0755'
+    recursive true
+    action :create
+end
+
+directory '/var/lib/postgresql/data' do
     owner 'root'
     group 'root'
     mode '0755'
@@ -69,18 +82,35 @@ directory '/var/lib/jenkins' do
     action :create
 end
 
-directory '/var/lib/postgres/data' do
-    owner 'root'
-    group 'root'
-    mode '0755'
-    recursive true
-    action :create
+execute 'install_docker_compose' do
+    command '/usr/bin/curl -L https://github.com/docker/compose/releases/download/1.21.2/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose'
+    user 'root'
+    not_if { ::File.exist?('/usr/local/bin/docker-compose') }
+    notifies :touch, 'file[docker_compose_command_file]', :immediately
 end
 
-template '/opt/docker-compose.yml' do
+file 'docker_compose_command_file' do
+    path '/usr/local/bin/docker-compose'
+    mode '0755'
+    owner 'root'
+    group 'root'
+    notifies :create, 'template[add_docker_compose_yml]', :immediately
+end
+
+template 'add_docker_compose_yml' do
     source 'docker-compose.yml.erb'
+    path '/opt/docker-compose.yml'
+    atomic_update true
     owner 'root'
     group 'root'
     mode '0644'
-    action :create_if_missing
+    action :nothing
+    notifies :run, 'execute[start_docker_containers]', :delayed
+end
+
+execute 'start_docker_containers' do
+    # add -d when it is fixed
+    command 'docker-compose -f /opt/docker-compose.yml up'
+    user 'root'
+    action :nothing
 end

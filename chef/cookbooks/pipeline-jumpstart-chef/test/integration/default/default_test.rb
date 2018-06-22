@@ -12,8 +12,8 @@
 #   end
 # end
 
-describe command('java --version') do
-  its('stdout') { should match /java 10/ }
+describe command('java -version') do
+  its('stdout') { should match /1.8.0_172/ }
 end
 
 describe service('docker') do
