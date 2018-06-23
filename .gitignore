@@ -1,1 +1,5 @@
 *.code-workspace
+.vagrant
+*.log
+Berksfile.lock
+.env
