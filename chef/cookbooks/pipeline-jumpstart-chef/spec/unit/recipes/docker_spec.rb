@@ -37,8 +37,8 @@ describe 'pipeline-jumpstart-chef::default' do
 
         it 'creates volumes for Jenkins' do
             expect(chef_run).to create_directory('/var/lib/jenkins').with(
-                user: 'jenkins',
-                group: 'jenkins'
+                user: 1000,
+                group: 1000
             )
         end
 

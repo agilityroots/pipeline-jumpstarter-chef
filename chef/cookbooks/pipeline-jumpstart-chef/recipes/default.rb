@@ -67,8 +67,8 @@ directory '/opt/sonatype-work/data' do
 end
 
 directory '/var/lib/jenkins' do
-    owner 'vagrant'
-    group 'vagrant'
+    owner 1000
+    group 1000
     mode '0755'
     recursive true
     action :create
