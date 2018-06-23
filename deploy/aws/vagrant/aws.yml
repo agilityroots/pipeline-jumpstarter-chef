@@ -1,0 +1,6 @@
+region_id: ap-southeast-1
+ami_id: ami-fe625382
+instance_type: t2.micro
+box:
+  name: chef-provisioned-demo
+  volume_size: 8

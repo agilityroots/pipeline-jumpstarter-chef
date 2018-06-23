@@ -1,0 +1,64 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+require 'yaml'
+
+unless Vagrant.has_plugin?("vagrant-aws")
+  raise 'vagrant-aws plugin is not installed!'
+end
+
+unless Vagrant.has_plugin?("vagrant-env")
+  raise 'vagrant-env plugin is not installed!'
+end
+
+Vagrant.configure("2") do |config|
+  # Enable .env
+  config.env.enable
+
+  # Load AWS Properties
+  aws_props = YAML.load_file('aws.yml')
+
+  # base box to use for aws
+  config.vm.box = "dummy"
+  config.vm.box_url = "https://github.com/mitchellh/vagrant-aws/raw/master/dummy.box"
+
+  # fix chef version
+  config.omnibus.chef_version = '14.2.0'
+
+  # Using rsync comment for using NFS   
+  config.vm.allowed_synced_folder_types = [:rsync]
+  
+  ## To use NFS uncomment lines below
+  #LINUX_NFS_OPTS = ['rw','no_subtree_check','async','all_squash','anongid=1000','anonuid=1000']
+  #config.vm.synced_folder ".", "/home/ubuntu/vagrant", type: "nfs", nfs_version: 4, nfs_udp: false, linux__nfs_options: LINUX_NFS_OPTS
+  #config.nfs.functional = false
+
+  # AWS customizations and settings
+  config.vm.provider :aws do |aws, override|
+    aws.access_key_id = ENV['ACCESS_KEY_ID']
+    aws.secret_access_key = ENV['SECRET_ACCESS_KEY']
+    aws.region = "#{aws_props['region_id']}"
+    aws.ami = "#{aws_props['ami_id']}"
+    aws.instance_type = "#{aws_props['instance_type']}"
+    aws.keypair_name = ENV['KEYPAIR_NAME']
+    aws.security_groups = ENV['SECURITY_GROUPS']
+    aws.tags = { "Name" => "#{aws_props['box']['name']}" }
+
+    # AWS Storage:
+    aws.block_device_mapping = [{
+      'DeviceName' => "/dev/sda1",
+      'Ebs.VolumeSize' => "#{aws_props['box']['volume_size']}", # Size in GB
+      'Ebs.DeleteOnTermination' => true
+    }]
+    override.ssh.username = "ubuntu"
+    override.ssh.private_key_path = ENV['PRIVATE_KEY_PATH']
+  end
+
+  config.vm.provision "chef_solo" do |chef|
+    chef.node_name = "#{aws_props['box']['name']}"
+    chef.synced_folder_type = "rsync"
+    # chef.synced_folder_type = "nfs"
+    chef.cookbooks_path = "../../../chef/cookbooks"
+    chef.add_recipe "pipeline-jumpstart-chef"
+  end
+
+end
