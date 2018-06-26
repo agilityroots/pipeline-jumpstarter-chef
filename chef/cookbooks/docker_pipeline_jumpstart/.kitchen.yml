@@ -19,7 +19,7 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[pipeline-jumpstart-chef::default]
+      - recipe[docker_pipeline_jumpstart::default]
     verifier:
       inspec_tests:
         - test/integration/default
