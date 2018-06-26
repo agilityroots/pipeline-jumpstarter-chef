@@ -58,7 +58,7 @@ Vagrant.configure("2") do |config|
     chef.synced_folder_type = "rsync"
     # chef.synced_folder_type = "nfs"
     chef.cookbooks_path = "../../../chef/cookbooks"
-    chef.add_recipe "pipeline-jumpstart-chef"
+    chef.add_recipe "docker_pipeline_jumpstart"
   end
 
 end
