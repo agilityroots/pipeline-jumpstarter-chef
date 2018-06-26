@@ -1,6 +1,6 @@
 #
 # Cookbook:: docker_pipeline_jumpstart
-# Spec:: default
+# Spec:: docker
 #
 # Copyright:: 2018, Agility Roots
 #
